@@ -6,7 +6,7 @@ async fn main() -> io::Result<()> {
     let listener = TcpListener::bind("127.0.0.1:8080").await?;
 
     println!("Server is running on 127.0.0.1:8080");
-
+    
     loop {
         // Accept a new incoming connection
         let (mut socket, _) = listener.accept().await?;

@@ -1,9 +1,16 @@
 use tokio::net::TcpStream;
 use tokio::io::{self, AsyncWriteExt, AsyncReadExt};
+use std::io::stdin;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let mut stream = TcpStream::connect("127.0.0.1:8080").await?;
+    println!("enter ip address of server");
+    let mut input = String::new();
+    stdin().read_line(&mut input).expect("Failed to read line");
+    dbg!(&input);
+    let inputwithport = input.trim().to_owned() + ":8080";
+    dbg!(&inputwithport);
+    let mut stream = TcpStream::connect(inputwithport).await?;
 
     // Send data
     stream.write_all(b"Hello, world!").await?;
