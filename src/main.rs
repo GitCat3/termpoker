@@ -3,9 +3,9 @@ use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let listener = TcpListener::bind("127.0.0.1:8080").await?;
+    let listener = TcpListener::bind("127.0.0.1:6666").await?;
 
-    println!("Server is running on 127.0.0.1:8080");
+    println!("Server is running on 127.0.0.1:6666");
     
     loop {
         // Accept a new incoming connection
@@ -19,6 +19,9 @@ async fn main() -> io::Result<()> {
             match socket.read(&mut buffer).await {
                 Ok(n) if n == 0 => return, // Connection closed
                 Ok(n) => {
+                    if String::from_utf8_lossy(&buffer[..n]) == "connect" {
+                        println!("connection!")
+                    }
                     println!("Received: {}", String::from_utf8_lossy(&buffer[..n]));
 
                     // Echo the data back to the client
